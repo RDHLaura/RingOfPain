@@ -14,7 +14,7 @@ object Jugador {
     var resistencia_maldiciones=50 //si no hay cartas que aumenten este stat directamente se puede eliminar y se usaria la lucidez + 50 %
 
 
-    fun actulizaStats(item: Item){
+    fun usarItem(item: Item){
         Jugador.vida+=item.vida
         Jugador.ataque+=item.ataque
         Jugador.defensa+=item.defensa
@@ -27,7 +27,7 @@ object Jugador {
     }
 
     //va a dar problemas en los stats negativos de las cartas al eliminarlas. Buscar otra forma
-    fun eliminaStats(item: Item){
+    fun eliminarItem(item: Item){
         Jugador.vida-=item.vida
         Jugador.ataque-=item.ataque
         Jugador.defensa-=item.defensa
