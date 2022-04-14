@@ -5,39 +5,36 @@ object Jugador {
     var ataque=3
     var defensa=2
     var velocidad=4
-    var lucidez=0 //Bonifica el efecto curativo de pociones
+    var lucidez=0 //Bonifica el efecto curativo de pociones/aumenta la resistencia a la maldición (50 + lucidez)%/Almas adicionales lucidez*5 %/Permite obtener más recursos
 
     //varian en función de las stats principales y de los objetos
     var ataqueCritico=0 //porcentaje
     var esquiva= 0 //Aumenta por velocidad (la mitad) y por objetos
     var sigilo=0 //Aumenta por velocidad(la mitad) y por objetos
-    var multiplicador_almas=0 //porcentaje que aumenta las almas adicionales
-    var resistencia_maldiciones=50
+    var resistencia_maldiciones=50 //si no hay cartas que aumenten este stat directamente se puede eliminar y se usaria la lucidez + 50 %
 
 
-
-    fun actulizaStats(carta: Carta){
-        Jugador.vida+=carta.vida
-        Jugador.ataque+=carta.ataque
-        Jugador.defensa+=carta.defensa
-        Jugador.velocidad+=carta.velocidad
-        Jugador.lucidez+=carta.lucidez
-        Jugador.ataqueCritico+=carta.ataqueCritico + carta.lucidez
-        Jugador.esquiva+=carta.esquiva + (carta.velocidad/2)
-        Jugador.sigilo+=carta.sigilo + (carta.velocidad/2)
-        Jugador.resistencia_maldiciones+= carta.resistencia_maldiciones + carta.lucidez
-
+    fun actulizaStats(item: Item){
+        Jugador.vida+=item.vida
+        Jugador.ataque+=item.ataque
+        Jugador.defensa+=item.defensa
+        Jugador.velocidad+=item.velocidad
+        Jugador.lucidez+=item.lucidez
+        Jugador.ataqueCritico+=item.ataqueCritico + item.lucidez
+        Jugador.esquiva+=item.esquiva + (item.velocidad/2)
+        Jugador.sigilo+=item.sigilo + (item.velocidad/2)
+        Jugador.resistencia_maldiciones+= item.resistencia_maldiciones + item.lucidez
     }
-    fun eliminaStats(carta: Carta){
-        Jugador.vida-=carta.vida
-        Jugador.ataque-=carta.ataque
-        Jugador.defensa-=carta.defensa
-        Jugador.velocidad-=carta.velocidad
-        Jugador.lucidez-=carta.lucidez
-        Jugador.ataqueCritico-=carta.ataqueCritico
-        Jugador.esquiva-=carta.esquiva
-        Jugador.sigilo-=carta.sigilo
-
+    fun eliminaStats(item: Item){
+        Jugador.vida-=item.vida
+        Jugador.ataque-=item.ataque
+        Jugador.defensa-=item.defensa
+        Jugador.velocidad-=item.velocidad
+        Jugador.lucidez-=item.lucidez
+        Jugador.ataqueCritico-=item.ataqueCritico
+        Jugador.esquiva-=item.esquiva
+        Jugador.sigilo-=item.sigilo
+        Jugador.resistencia_maldiciones-= item.resistencia_maldiciones + item.lucidez
     }
 
 
