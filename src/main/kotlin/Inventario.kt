@@ -11,15 +11,19 @@ object Inventario {
 
 
     fun addObjeto(item: Item){
-        //Hay que comprobar si el espacio en inventario para esa carta está libre o en caso contrario reemplazar eliminando los stats de esa carta del jugador
-        if(objetos[item.tipo]==null){
+        //Comprueba si el item es usable o pasivo y si el espacio en inventario para esa carta está libre o
+        //en caso contrario reemplazar eliminando los stats de esa carta al jugador
+        if(item.categoria=="Usable"){
             objetos[item.tipo]=item
-            Jugador.actulizaStats(item)
         }else{
-            Jugador.eliminaStats(objetos[item.tipo]!!)
-            objetos[item.tipo]=item
-            Jugador.actulizaStats(item)
+            if(objetos[item.tipo]==null){
+                objetos[item.tipo]=item
+                Jugador.usarItem(item)
+            }else{
+                Jugador.eliminarItem(objetos[item.tipo]!!)
+                objetos[item.tipo]=item
+                Jugador.usarItem(item)
+            }
         }
     }
-
 }

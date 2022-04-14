@@ -1,5 +1,6 @@
 class Item:Carta() {
     var tipo="guantes" //Determina que hueco de inventario ocupa
+    var categoria="Usable" //Indica si el item es usable o es pasivo
     var ataqueCritico=0
     var vida:Int =0
     var ataque=0

@@ -3,8 +3,8 @@ object Jugador {
     var almas=0
     var vida:Int =12
     var ataque=3
-    var defensa=2
-    var velocidad=4
+    var defensa=2 //exceso de def se convierte en esquiva de daño penetrante (ver como poner daño penetrante)
+    var velocidad=4 //Posibilidad de esquiva y sigilo velocidad/2
     var lucidez=0 //Bonifica el efecto curativo de pociones/aumenta la resistencia a la maldición (50 + lucidez)%/Almas adicionales lucidez*5 %/Permite obtener más recursos
 
     //varian en función de las stats principales y de los objetos
@@ -14,7 +14,7 @@ object Jugador {
     var resistencia_maldiciones=50 //si no hay cartas que aumenten este stat directamente se puede eliminar y se usaria la lucidez + 50 %
 
 
-    fun actulizaStats(item: Item){
+    fun usarItem(item: Item){
         Jugador.vida+=item.vida
         Jugador.ataque+=item.ataque
         Jugador.defensa+=item.defensa
@@ -26,8 +26,8 @@ object Jugador {
         Jugador.resistencia_maldiciones+= item.resistencia_maldiciones + item.lucidez
     }
 
-    //va a dar problemas en los stats negativos de las cartas al eliminarlas. Buscar otra forma
-    fun eliminaStats(item: Item){
+
+    fun eliminarItem(item: Item){
         Jugador.vida-=item.vida
         Jugador.ataque-=item.ataque
         Jugador.defensa-=item.defensa
