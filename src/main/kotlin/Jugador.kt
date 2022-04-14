@@ -26,7 +26,7 @@ object Jugador {
         Jugador.resistencia_maldiciones+= item.resistencia_maldiciones + item.lucidez
     }
 
-    //va a dar problemas en los stats negativos de las cartas al eliminarlas. Buscar otra forma
+  
     fun eliminaStats(item: Item){
         Jugador.vida-=item.vida
         Jugador.ataque-=item.ataque
