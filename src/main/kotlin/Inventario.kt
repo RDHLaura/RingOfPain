@@ -9,36 +9,17 @@ object Inventario {
         "Mascara" to null, "Bote" to null, "Collar" to null, "Amuleto" to null,
         "Piedra" to null, "Libro" to null, "Pergamino" to null)
 
-    fun actulizaStats(carta: Carta){
-        Jugador.vida+=carta.vida
-        Jugador.ataque+=carta.ataque
-        Jugador.defensa+=carta.defensa
-        Jugador.velocidad+=carta.velocidad
-        Jugador.lucidez+=carta.lucidez
-        Jugador.ataqueCritico+=carta.ataqueCritico
-        Jugador.esquiva+=carta.esquiva
-        Jugador.sigilo+=carta.sigilo
-    }
-    fun eliminaStats(carta: Carta){
-        fun actulizaStats(carta: Carta){
-            Jugador.vida-=carta.vida
-            Jugador.ataque-=carta.ataque
-            Jugador.defensa-=carta.defensa
-            Jugador.velocidad-=carta.velocidad
-            Jugador.lucidez-=carta.lucidez
-            Jugador.ataqueCritico-=carta.ataqueCritico
-            Jugador.esquiva-=carta.esquiva
-            Jugador.sigilo-=carta.sigilo
-        }
-    }
+
+
     fun addObjeto(carta: Carta){
         //Hay que comprobar si el espacio en inventario para esa carta está libre o en caso contrario reemplazar eliminando los stats de esa carta del jugador
         if(objetos[carta.tipo]==null){
             objetos[carta.tipo]=carta
-            actulizaStats(carta)
+            Jugador.actulizaStats(carta)
         }else{
-            eliminaStats(objetos[carta.tipo]!!)
-
+            Jugador.eliminaStats(objetos[carta.tipo]!!)
+            objetos[carta.tipo]=carta
+            Jugador.actulizaStats(carta)
         }
 
     }

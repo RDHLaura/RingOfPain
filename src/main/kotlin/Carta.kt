@@ -8,4 +8,5 @@ class Carta {
     var lucidez=0
     var esquiva=0
     var sigilo=0
+    var resistencia_maldiciones=0
 }
