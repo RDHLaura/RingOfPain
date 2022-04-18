@@ -9,14 +9,21 @@ object Inventario {
         "Mascara" to null, "Bote" to null, "Collar" to null, "Amuleto" to null,
         "Piedra" to null, "Libro" to null, "Pergamino" to null)
 
-
+    fun espacioOcupado(item:Item):Boolean{ //se puede hacer llamada a esta función para preguntar al usuario si quiere reemplazar
+        //el objeto por el nuevo, si es así llamar a la funcion addObjeto
+        if(objetos[item.tipo]==null){
+            return false
+        }else{
+            return true
+        }
+    }
     fun addObjeto(item: Item){
         //Comprueba si el item es usable o pasivo y si el espacio en inventario para esa carta está libre o
         //en caso contrario reemplazar eliminando los stats de esa carta al jugador
         if(item.categoria=="Usable"){
             objetos[item.tipo]=item
         }else{
-            if(objetos[item.tipo]==null){
+            if(espacioOcupado(item)==false){
                 objetos[item.tipo]=item
                 Jugador.usarItem(item)
             }else{
