@@ -1,6 +1,7 @@
 fun main(args: Array<String>) {
-println(5-(-2))
-
+    var sala1=Sala(TipoSalas.PRINCIPAL)
+    println(sala1.tipoSala.cartas)
+    print(Sala.salasCreadas)
 
 
 }

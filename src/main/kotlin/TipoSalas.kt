@@ -1,15 +1,21 @@
-enum class TipoSalas (
-    /*In each run, there are 15 main dungeon rooms, 2 Finders Keepers, 4 Shops and a floor 16 (?) ending floor,
-     plus optional event dungeons that the player can choose to visit, and boss dungeon(s) - varying on which ending is taken.*/
-    cartas:MutableMap<String, MutableList<Carta>>
+enum class  TipoSalas (
+
+    var cartas:MutableMap<String, Int>,
+    var num_cartas_sala:Int
         ){
 
     //Revisar esto, no me gusta
-    PRINCIPAL(mutableMapOf("enemigos" to mutableListOf<Carta>(),
-                            "items" to mutableListOf<Carta>(),
-                            "puertas" to mutableListOf<Carta>())),
-    GUARDIAS(mutableMapOf("tesoro" to mutableListOf<Carta>())),
-    TIENDA (mutableMapOf("enemigos" to mutableListOf<Carta>())),
-    FINAL (mutableMapOf("enemigos" to mutableListOf<Carta>()))
+    PRINCIPAL(mutableMapOf("enemigo" to 5,
+                            "item" to 1,
+                            "puerta" to 2,
+                            "pocion" to 2,
+                            "boost_stat" to 1,
+                            "tesoro" to 1,
+                            ), 12),
+    GUARDIAS(mutableMapOf("tesoro" to 1,
+                            "enemigo" to 8),9), //mirar cuantas cartas son
+    TIENDA (mutableMapOf("item" to 3), 3),
+    Finders_Keepers(mutableMapOf("item" to 1), 1), //quien lo encuentra se lo queda
+    FINAL (mutableMapOf("enemigos" to 1), 1)
 
 }
