@@ -11,7 +11,7 @@ object Jugador {
     var ataqueCritico=0 //porcentaje
     var esquiva= 0 //Aumenta por velocidad (la mitad) y por objetos
     var sigilo=0 //Aumenta por velocidad(la mitad) y por objetos
-    var resistencia_maldiciones=50 //si no hay cartas que aumenten este stat directamente se puede eliminar y se usaria la lucidez + 50 %
+    var resistencia_maldiciones=50 //si no hay cartas que aumenten este stat directamente se puede eliminar y se usaria la lucidez + 50, se usa como %
 
 
     fun usarItem(item: Item){
@@ -26,7 +26,7 @@ object Jugador {
         Jugador.resistencia_maldiciones+= item.resistencia_maldiciones + item.lucidez
     }
 
-    //va a dar problemas en los stats negativos de las cartas al eliminarlas. Buscar otra forma
+
     fun eliminarItem(item: Item){
         Jugador.vida-=item.vida
         Jugador.ataque-=item.ataque
