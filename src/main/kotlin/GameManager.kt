@@ -17,21 +17,40 @@ object GameManager {
 
 
     fun enemigo_ataque_expansivo(enemigo: Enemigo){ //Debe ser recursiva. Hacer pruebas TODO
-        var cartas_afectadas_explosion= listOf<Carta>(
-            salaActual.cartasSala[salaActual.cartasSala.indexOf(enemigo)-1],
-            salaActual.cartasSala[salaActual.cartasSala.indexOf(enemigo)+1]
-        )
+
+        var cartas_afectadas_explosion= mutableListOf<Carta>()
+        if (salaActual.cartasSala.indexOf(enemigo)>0){
+                cartas_afectadas_explosion.add(
+                salaActual.cartasSala[salaActual.cartasSala.indexOf(enemigo)-1])
+            cartas_afectadas_explosion.add(salaActual.cartasSala[salaActual.cartasSala.indexOf(enemigo)+1])
+
+        }
+        else if(salaActual.cartasSala.indexOf(enemigo)==0){//el enemigo está en la primera posición
+            cartas_afectadas_explosion.add(salaActual.cartasSala[salaActual.cartasSala.lastIndex])
+            cartas_afectadas_explosion.add(salaActual.cartasSala[salaActual.cartasSala.indexOf(enemigo)+1])
+
+        }else if(salaActual.cartasSala.indexOf(enemigo)==salaActual.cartasSala.lastIndex){//el enemigo está en la última posición
+            cartas_afectadas_explosion.add(salaActual.cartasSala[0])
+            cartas_afectadas_explosion.add(salaActual.cartasSala[salaActual.cartasSala.indexOf(enemigo)-1])
+        }
+
         cartas_afectadas_explosion.forEach{
             if(it is Enemigo){
                 enemigo.ataque(it)
+                salaActual.cartasSala.remove(enemigo)
+
                 if(it.vida<=0){
+                    salaActual.cartasSala.remove(it)
                     enemigo_ataque_expansivo(it)
                 }
             }
         }
     }
     fun enemigo_ataque(enemigo: Enemigo){
-        enemigo.ataque(Jugador)
+        //Comprueba que el enemigo esté en la posición 0 y 1 para hacer daño al jugador
+        if(salaActual.cartasSala.indexOf(enemigo)==0 || salaActual.cartasSala.indexOf(enemigo)==1){
+            enemigo.ataque(Jugador)
+        }
         if(enemigo.tipoEnemigo=="Veneno" || enemigo.tipoEnemigo=="Explosion"){
             enemigo_ataque_expansivo(enemigo)
         }
@@ -39,7 +58,6 @@ object GameManager {
 
     fun siguienteSala(){
         salaActual=Sala(mapaSalas[Sala.totalSalasCreadas]!!.random())
-
     }
 
 

@@ -24,7 +24,11 @@ class Sala (var tipoSala: TipoSalas) {
         if(tipoSala.nivel_sala==1){
             for ((clase, cantidad) in tipoSala.cartas){
                 repeat(cantidad){
-                    cartasSala.add(clase)
+                    when(clase){
+                        "Enemigo"-> cartasSala.add(Enemigo())
+                        "Item"-> cartasSala.add(Item())
+                    }
+
                 }
             }
         }

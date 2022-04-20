@@ -26,6 +26,7 @@ object Jugador:Carta () {
         Jugador.esquiva+=item.esquiva + (item.velocidad/2)
         Jugador.sigilo+=item.sigilo + (item.velocidad/2)
         Jugador.resistencia_maldiciones+= item.resistencia_maldiciones + item.lucidez
+
     }
 
 
