@@ -18,5 +18,7 @@ enum class  TipoSalas (
                             Enemigo() to 8),9, 1, 1), //mirar cuantas cartas son
     TIENDA (mutableMapOf(Item() to 3), 3, 1, 4),
     Finders_Keepers(mutableMapOf(Item() to 1), 1, 1, 2),
-    FINAL (mutableMapOf(Enemigo() to 1), 1, 1, 1)
+    FINAL (mutableMapOf(Enemigo() to 1), 1, 1, 1),
+
+
 }
