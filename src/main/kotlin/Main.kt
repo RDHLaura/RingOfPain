@@ -5,7 +5,7 @@ fun main(args: Array<String>) {
     println("-----------------------------")
 
     repeat(2){
-        var enemigo:Carta=GameManager.salaActual.cartasSala[3]
+        var enemigo:Carta=GameManager.salaActual.cartasSala[2]
         if(enemigo is Enemigo){
             GameManager.enemigo_ataque(enemigo)
             println(GameManager.salaActual.cartasSala)

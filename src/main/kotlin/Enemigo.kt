@@ -8,10 +8,10 @@ class Enemigo():Carta() {
     //para pruebas, a sustituir
     var num= numero
     var vida:Int =6
-    var ataque=2
+    var ataque=3
     var defensa=1
     var velocidad=3
-    var tipoEnemigo="Veneno"
+    var tipoEnemigo="Explosion"
 
 
     fun ataque(jugador:Jugador){ //Para ataques expansivos

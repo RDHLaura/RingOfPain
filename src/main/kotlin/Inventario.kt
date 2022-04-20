@@ -10,8 +10,18 @@ object Inventario {
                                             //si es así llamar a la funcion addObjeto
         return objetos[item.tipo] != null
     }
+    fun usarOjetoConsumible(item: Item){
+        //faltaría por añadir el uso de turnos en el cooldown y se podría usar para pergaminos y para libros
+        if(item.categoria=="Usable" && item.usos>0){
+            Jugador.usarItem(item) //modificarla para los casos en que sea efectos especiales TODO
+            item.usos--
+            if(item.usos<=0 && item.cooldown==null){
+                objetos[item.tipo]=null
+            }
+        }
+    }
 
-    fun addObjeto(item: Item){
+    fun addObjeto(item: Item){ //añade el objeto al inventario
         //Comprueba si el item es usable o pasivo y si el espacio en inventario para esa carta está libre o
         //en caso contrario reemplazar eliminando los stats de esa carta al jugador
 

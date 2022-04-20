@@ -10,7 +10,9 @@ class Item(
     var lucidez: Int =0,
     var esquiva: Int =0,
     var sigilo: Int =0,
-    var resistencia_maldiciones: Int =0
+    var resistencia_maldiciones: Int =0,
+    var usos:Int=1,
+    var cooldown:Int?=null
 ): Carta() {
 
 }
