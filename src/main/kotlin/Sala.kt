@@ -8,27 +8,15 @@ class Sala (var tipoSala: TipoSalas) {
     companion object{
         var totalSalasCreadas=0
         var ultimas_salas= mutableListOf<TipoSalas>()
-        var mapaSalas= mutableMapOf<Int, MutableList<TipoSalas>>( //poner las salas correctas
-            0 to mutableListOf<TipoSalas>(TipoSalas.PRINCIPAL),
-            1 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers,TipoSalas.GUARDIAS),
-            2 to mutableListOf<TipoSalas>(TipoSalas.PRINCIPAL),
-            3 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers,TipoSalas.GUARDIAS),
-            4 to mutableListOf<TipoSalas>(TipoSalas.PRINCIPAL),
-            5 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers,TipoSalas.GUARDIAS),
-            6 to mutableListOf<TipoSalas>(TipoSalas.PRINCIPAL),
-            7 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers,TipoSalas.GUARDIAS),
-            8 to mutableListOf<TipoSalas>(TipoSalas.PRINCIPAL),
-            9 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers,TipoSalas.GUARDIAS),
-        )
     }
     init{
-
         if (tipoSala.salasRestantes <= 0) {
             throw Exception("Se alcanzó el máx de ese tipo sala")
         } else {
             tipoSala.salasRestantes--
             totalSalasCreadas++
             ultimas_salas.add(tipoSala)
+            generarSala()
         }
     }
 
@@ -36,11 +24,14 @@ class Sala (var tipoSala: TipoSalas) {
         if(tipoSala.nivel_sala==1){
             for ((clase, cantidad) in tipoSala.cartas){
                 repeat(cantidad){
-                    cartasSala.add(clase)
+                    when(clase){
+                        "Enemigo"-> cartasSala.add(Enemigo())
+                        "Item"-> cartasSala.add(Item())
+                    }
+
                 }
             }
         }
-
     }
 
 }

@@ -1,4 +1,4 @@
-object Jugador {
+object Jugador:Carta () {
     //stats principales
     var almas=0
     var vida:Int =12
@@ -13,7 +13,9 @@ object Jugador {
     var sigilo=0 //Aumenta por velocidad (la mitad) y por objetos
     var resistencia_maldiciones=50 //si no hay cartas que aumenten este stat directamente se puede eliminar y se usaria la lucidez + 50, se usa como %
 
-
+    fun ataque(enemigo: Enemigo){
+        enemigo.vida-= ataque //cambiar formula TODO
+    }
     fun usarItem(item: Item){
         Jugador.vida+=item.vida
         Jugador.ataque+=item.ataque
@@ -24,6 +26,7 @@ object Jugador {
         Jugador.esquiva+=item.esquiva + (item.velocidad/2)
         Jugador.sigilo+=item.sigilo + (item.velocidad/2)
         Jugador.resistencia_maldiciones+= item.resistencia_maldiciones + item.lucidez
+
     }
 
 
