@@ -10,7 +10,7 @@ object Jugador {
     //varian en función de las stats principales y de los objetos
     var ataqueCritico=0 //porcentaje
     var esquiva= 0 //Aumenta por velocidad (la mitad) y por objetos
-    var sigilo=0 //Aumenta por velocidad(la mitad) y por objetos
+    var sigilo=0 //Aumenta por velocidad (la mitad) y por objetos
     var resistencia_maldiciones=50 //si no hay cartas que aumenten este stat directamente se puede eliminar y se usaria la lucidez + 50, se usa como %
 
 
