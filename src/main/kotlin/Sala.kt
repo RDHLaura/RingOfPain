@@ -5,7 +5,7 @@ class Sala (var tipoSala: TipoSalas) {
 
 
     var cartasSala= mutableListOf<Carta>()
-    //MAPA DE SALA: 10 SALAS
+
     companion object{
         var totalSalasCreadas=0
         var ultimas_salas= mutableListOf<TipoSalas>()

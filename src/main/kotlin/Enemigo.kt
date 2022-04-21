@@ -20,6 +20,9 @@ class Enemigo():Carta() {
     fun muerto(){ //añade las almas al jugador y lo elimina de la lista de cartas de la sala
         Jugador.almas+=this.almas
         GameManager.salaActual.cartasSala.remove(this)
+        if(GameManager.salaActual.cartasSala.indexOf(this)==0){ //si el enemigo que muere está en la posición 0 se coloca el último de la lista en esa posición
+            GameManager.salaActual.cartasSala.add(0,GameManager.salaActual.cartasSala.last())
+        }
     }
 
     fun ataque(jugador:Jugador){

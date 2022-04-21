@@ -77,20 +77,21 @@ object GameManager {
     }
 
 
-    private fun enemigo_ataque_explosivo(enemigo: Enemigo){
-        enemigosAdyacentes(enemigo).forEach{
+    private fun enemigo_ataque_explosivo(enemigo: Enemigo){ //tiene un problema, si mueren los dos adyacentes
+                                                        //solo vuelve a llamar la función para el primero de la lista
+        ataqueEnemigoEstandar(enemigo)//ataca al jugador
+        var adyacentes= enemigosAdyacentes(enemigo)
+        enemigo.muerto()
+        adyacentes.forEach{ //hace daño a los adyacentes
             if(it is Enemigo){
                 enemigo.ataque(it)
-                ataqueEnemigoEstandar(enemigo)
-                enemigo.muerto()
-
-                if(it.vida<=0){
-                    ataqueEnemigoEstandar(enemigo)
+                if(it.vida<=0 && it.tipoEnemigo=="Explosion"){
                     it.muerto()
-                    ataqueEnemigo(it)
+                    ataqueEnemigo(enemigo)
                 }
             }
         }
+
     }
 
     fun enemigo_ataque_veneno(enemigo: Enemigo){
