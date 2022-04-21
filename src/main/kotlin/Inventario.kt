@@ -6,6 +6,11 @@ object Inventario {
         "Mascara" to null, "Bote" to null, "Collar" to null, "Amuleto" to null,
         "Piedra" to null, "Libro" to null, "Pergamino" to null)
 
+
+
+
+
+
     fun espacioOcupado(item:Item):Boolean{ //para preguntar al usuario si quiere reemplazar el objeto por el nuevo,
                                             //si es así llamar a la funcion addObjeto
         return objetos[item.tipo] != null

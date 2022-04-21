@@ -28,10 +28,8 @@ class Sala (var tipoSala: TipoSalas) {
                         "Enemigo"-> cartasSala.add(Enemigo())
                         "Item"-> cartasSala.add(Item())
                     }
-
                 }
             }
         }
     }
-
 }

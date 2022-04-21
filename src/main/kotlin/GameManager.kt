@@ -1,46 +1,65 @@
 object GameManager {
     var mapaSalas= mutableMapOf<Int, MutableList<TipoSalas>>( //poner las salas correctas
-        0 to mutableListOf<TipoSalas>(TipoSalas.PRINCIPAL),
-        1 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers,TipoSalas.GUARDIAS),
-        2 to mutableListOf<TipoSalas>(TipoSalas.PRINCIPAL),
-        3 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers,TipoSalas.GUARDIAS),
-        4 to mutableListOf<TipoSalas>(TipoSalas.PRINCIPAL),
-        5 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers,TipoSalas.GUARDIAS),
-        6 to mutableListOf<TipoSalas>(TipoSalas.PRINCIPAL),
-        7 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers,TipoSalas.GUARDIAS),
-        8 to mutableListOf<TipoSalas>(TipoSalas.PRINCIPAL),
-        9 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers,TipoSalas.GUARDIAS),
+        0 to mutableListOf<TipoSalas>(TipoSalas.SALA_ESTANDAR),
+        1 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers,TipoSalas.TIENDA, TipoSalas.SALA_ESTANDAR),
+        2 to mutableListOf<TipoSalas>(TipoSalas.SALA_ESTANDAR),
+        3 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers,TipoSalas.GUARDIAS, TipoSalas.SALA_ESTANDAR),
+        4 to mutableListOf<TipoSalas>(TipoSalas.SALA_ESTANDAR),
+        5 to mutableListOf<TipoSalas>(TipoSalas.AGRESIVIDAD,TipoSalas.TIENDA, TipoSalas.SALA_ESTANDAR),
+        6 to mutableListOf<TipoSalas>(TipoSalas.SALA_ESTANDAR),
+        7 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers,TipoSalas.GUARDIAS, TipoSalas.SALA_ESTANDAR),
+        8 to mutableListOf<TipoSalas>(TipoSalas.SALA_ESTANDAR),
+        9 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers,TipoSalas.GUARDIAS, TipoSalas.SALA_ESTANDAR),
     )
-    lateinit var salaActual:Sala
+    var salaActual:Sala= Sala(mapaSalas[0]!![0]) //se inicia con la principal creada
+
+
+    //////////////////interacción jugador con la carta seleccionada//////////////////////////////
+    fun accionJugador(carta: Carta){ //el jugador selecciona una carta del anillo ataca/equipa
+        when (carta){
+            is Item->Inventario.addObjeto(carta) //crear una función que equipe cualquier objeto TODO
+            is Enemigo -> ataqueJugador(carta)
+            is Puerta -> siguienteSala(carta.tipoSalas)
+        }
+    }
+
+
+
     //////////////creación de sala//////////////////////////
-    fun siguienteSala(){ //crea la sala y usa el bote si lo tiene equipado y con usos disponibles
-        salaActual=Sala(mapaSalas[Sala.totalSalasCreadas]!!.random())
+    private fun siguienteSala(tipoSalas: TipoSalas){ //crea la sala y usa el bote si lo tiene equipado y con usos disponibles
+        salaActual=Sala(tipoSalas)
         if(Inventario.objetos["Bote"]!=null && Inventario.objetos["Bote"]!!.usos>0){
             Inventario.usarOjetoConsumible(Inventario.objetos["Bote"]!!)
         }
     }
+
+
+
     //cambiar fórmulas de ataque TODO
 
-    //función que añada las almas al jugador cuando muere el enemigo TODO
+    ////////////////Funciones ataques///////////////////
 
-    ////////////////Funciones ataque///////////////////
-
-    fun ataqueBasicoEnemigo(enemigo: Enemigo){
-        //Comprueba que el enemigo esté en la posición 0 y 1 para hacer daño al jugador
-        if(salaActual.cartasSala.indexOf(enemigo)==0 || salaActual.cartasSala.indexOf(enemigo)==1){
-            enemigo.ataque(Jugador)
-        }
+    fun ataqueJugador(enemigo: Enemigo){ //el jugador realiza el ataque al enemigo seleccionado
+        Jugador.ataque(enemigo)
+        ataqueEnemigo(enemigo)
     }
-    fun enemigo_ataque(enemigo: Enemigo){
-        ataqueBasicoEnemigo(enemigo)
+
+
+    private fun ataqueEnemigo(enemigo: Enemigo){ //selecciona el tipo de ataque que realizará el enemigo dependiendo del tipo que sea
         when(enemigo.tipoEnemigo){
+            "Normal"-> ataqueEnemigoEstandar(enemigo)
             "Explosion"->enemigo_ataque_explosivo(enemigo)
             "Veneno"->enemigo_ataque_veneno(enemigo)
         }
     }
 
-    fun enemigo_ataque_explosivo(enemigo: Enemigo){
+    private fun ataqueEnemigoEstandar(enemigo: Enemigo){ //Comprueba que el enemigo esté en la posición 0 y 1 para hacer daño al jugador
+        if(salaActual.cartasSala.indexOf(enemigo) in 0..1){
+            enemigo.ataque(Jugador)
+        }
+    }
 
+    fun enemigosAdyacentes(enemigo: Enemigo):MutableList<Carta>{
         var cartas_afectadas_explosion= mutableListOf<Carta>()
         if (salaActual.cartasSala.indexOf(enemigo)>0){
             cartas_afectadas_explosion.add(salaActual.cartasSala[salaActual.cartasSala.indexOf(enemigo)-1])
@@ -54,17 +73,21 @@ object GameManager {
             cartas_afectadas_explosion.add(salaActual.cartasSala[0])
             cartas_afectadas_explosion.add(salaActual.cartasSala[salaActual.cartasSala.indexOf(enemigo)-1])
         }
+        return cartas_afectadas_explosion
+    }
 
-        cartas_afectadas_explosion.forEach{
+
+    private fun enemigo_ataque_explosivo(enemigo: Enemigo){
+        enemigosAdyacentes(enemigo).forEach{
             if(it is Enemigo){
                 enemigo.ataque(it)
-
-                salaActual.cartasSala.remove(enemigo)
+                ataqueEnemigoEstandar(enemigo)
+                enemigo.muerto()
 
                 if(it.vida<=0){
-                    ataqueBasicoEnemigo(enemigo)
-                    salaActual.cartasSala.remove(it)
-                    enemigo_ataque(it)
+                    ataqueEnemigoEstandar(enemigo)
+                    it.muerto()
+                    ataqueEnemigo(it)
                 }
             }
         }

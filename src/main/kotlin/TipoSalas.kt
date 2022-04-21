@@ -7,9 +7,9 @@ enum class  TipoSalas (
         ){
 
     //Revisar esto, no me gusta
-    PRINCIPAL(mutableMapOf("Enemigo" to 5,
+    SALA_ESTANDAR(mutableMapOf("Enemigo" to 5,
                             "Item" to 1
-                           /* "Puerta" to 2,
+                           /* "Puerta" to 3,
                             "Pocion" to 2,
                             "boost_stat" to 1,
                             "Tesoro" to 1,*/
@@ -19,6 +19,15 @@ enum class  TipoSalas (
     TIENDA (mutableMapOf("Item" to 3), 3, 1, 4),
     Finders_Keepers(mutableMapOf("Item" to 1), 1, 1, 2),
     FINAL (mutableMapOf("Enemigo" to 1), 1, 1, 1),
+    AGRESIVIDAD(mutableMapOf("Enemigo" to 8,
+                            "Item" to 2
+                            /* "Puerta" to 2,
+                             "Pocion" to 2,
+                             "boost_stat" to 1,
+                             "Tesoro" to 1,*/
+                        ), 12, 1, 15),
+
+
 
 
 }
