@@ -26,7 +26,7 @@ object GameManager {
 
 
     //////////////creación de sala//////////////////////////
-    private fun siguienteSala(tipoSalas: TipoSalas){ //crea la sala y usa el bote si lo tiene equipado y con usos disponibles
+    fun siguienteSala(tipoSalas: TipoSalas){ //crea la sala y usa el bote si lo tiene equipado y con usos disponibles
         salaActual=Sala(tipoSalas)
         if(Inventario.objetos["Bote"]!=null && Inventario.objetos["Bote"]!!.usos>0){
             Inventario.usarOjetoConsumible(Inventario.objetos["Bote"]!!)
@@ -59,37 +59,54 @@ object GameManager {
         }
     }
 
-    fun enemigosAdyacentes(enemigo: Enemigo):MutableList<Carta>{
+    fun enemigosAdyacentes(enemigo: Enemigo):MutableList<Carta>?{
         var cartas_afectadas_explosion= mutableListOf<Carta>()
-        if (salaActual.cartasSala.indexOf(enemigo)>0){
+        if(salaActual.cartasSala.size<=1) {
+            return null
+        }
+        else if (salaActual.cartasSala.indexOf(enemigo)==salaActual.cartasSala.lastIndex){//el enemigo está en la última posición
+            cartas_afectadas_explosion.add(salaActual.cartasSala[0])
             cartas_afectadas_explosion.add(salaActual.cartasSala[salaActual.cartasSala.indexOf(enemigo)-1])
-            cartas_afectadas_explosion.add(salaActual.cartasSala[salaActual.cartasSala.indexOf(enemigo)+1])
         }
         else if(salaActual.cartasSala.indexOf(enemigo)==0){//el enemigo está en la primera posición
             cartas_afectadas_explosion.add(salaActual.cartasSala[salaActual.cartasSala.lastIndex])
             cartas_afectadas_explosion.add(salaActual.cartasSala[salaActual.cartasSala.indexOf(enemigo)+1])
 
-        }else if(salaActual.cartasSala.indexOf(enemigo)==salaActual.cartasSala.lastIndex){//el enemigo está en la última posición
-            cartas_afectadas_explosion.add(salaActual.cartasSala[0])
+        }else if(salaActual.cartasSala.indexOf(enemigo)>0){
             cartas_afectadas_explosion.add(salaActual.cartasSala[salaActual.cartasSala.indexOf(enemigo)-1])
+            cartas_afectadas_explosion.add(salaActual.cartasSala[salaActual.cartasSala.indexOf(enemigo)+1])
         }
         return cartas_afectadas_explosion
     }
 
 
-    private fun enemigo_ataque_explosivo(enemigo: Enemigo){
-        enemigosAdyacentes(enemigo).forEach{
-            if(it is Enemigo){
-                enemigo.ataque(it)
-                ataqueEnemigoEstandar(enemigo)
-                enemigo.muerto()
+    private fun enemigo_ataque_explosivo(enemigo: Enemigo){ //tiene un problema, si mueren los dos adyacentes
+        //solo vuelve a llamar la función para el primero de la lista
+        ataqueEnemigoEstandar(enemigo)//ataca al jugador
 
-                if(it.vida<=0){
-                    ataqueEnemigoEstandar(enemigo)
-                    it.muerto()
-                    ataqueEnemigo(it)
+        val adyacentes = enemigosAdyacentes(enemigo)
+        enemigo.muerto()
+        println(Jugador.almas)
+        if( adyacentes!=null) {
+            adyacentes.forEach {
+                if (it is Enemigo) {
+                    enemigo.ataque(it) //adyacente sufre daño por enemigo explotado
                 }
             }
+            adyacentes.forEach {
+                if (it is Enemigo && it.vida <= 0 && it.tipoEnemigo == "Explosion") {
+                    println(salaActual.cartasSala)
+                    if (salaActual.cartasSala.filter { it is Enemigo }.size >1)
+                        enemigo_ataque_explosivo(it)
+                    else
+                        it.muerto()
+
+
+
+                }
+            }
+
+
         }
     }
 
