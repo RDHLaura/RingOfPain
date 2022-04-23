@@ -82,6 +82,7 @@ object GameManager {
         return lista2.distinct()
     }
 
+
     private fun enemigo_ataque_explosivo(enemigo: Enemigo){
         ataqueEnemigoEstandar(enemigo)//ataca al jugador
         val adyacentes = adyacentes(enemigo)
@@ -89,6 +90,7 @@ object GameManager {
         adyacentes.forEach { enemigo.ataque(it) }//adyacente sufre daño por enemigo explotado
         adyacentes.filter{it.tipoEnemigo!="Explosion"}.forEach{if(it.vida<=0) it.muerto()}
         adyacentes.filter { it.tipoEnemigo == "Explosion"}.forEach{if(it.vida<=0) enemigo_ataque_explosivo(it)}
+
     }
 
     fun enemigo_ataque_veneno(enemigo: Enemigo){

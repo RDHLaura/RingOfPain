@@ -1,10 +1,11 @@
+import java.util.Collections
 class Sala (var tipoSala: TipoSalas) {
     /*In each run, there are 15 main dungeon rooms, 2 Finders Keepers, 4 Shops and a floor 16 (?) ending floor,
   plus optional event dungeons that the player can choose to visit, and boss dungeon(s) - varying on which ending is taken.*/
 
 
     var cartasSala= mutableListOf<Carta>()
-    //MAPA DE SALA: 10 SALAS
+
     companion object{
         var totalSalasCreadas=0
         var ultimas_salas= mutableListOf<TipoSalas>()
@@ -21,7 +22,6 @@ class Sala (var tipoSala: TipoSalas) {
     }
 
     fun generarSala(){
-
         for ((clase, cantidad) in tipoSala.cartas){
             repeat(cantidad){
                 when(clase){
@@ -30,6 +30,14 @@ class Sala (var tipoSala: TipoSalas) {
                 }
             }
         }
-
     }
+
+    fun rotarDerecha(){
+        Collections.rotate(cartasSala,1)
+    }
+
+    fun rotarIzquierda(){
+        Collections.rotate(cartasSala,-1)
+    }
+
 }
