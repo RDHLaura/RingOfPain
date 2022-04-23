@@ -1,12 +1,10 @@
 class Enemigo():Carta() {
     companion object {
-        var numero:Int=0
+        var nombres:Int=0
     }
-    init {
-        numero++
-    }
+
     //para pruebas, a sustituir
-    var num= numero
+    var nombre:Int=0
     var vida:Int =6
     var ataque=3
     var defensa=1
@@ -14,6 +12,10 @@ class Enemigo():Carta() {
     var tipoEnemigo="Explosion"
     var almas=3
 
+    init {
+        nombres++
+        nombre= nombres
+    }
 
     //////////////////////////////////////////////////////////////////
     ////////////////////////Poner en la clase oficial///////////////
@@ -33,7 +35,7 @@ class Enemigo():Carta() {
     }
 
     override fun toString(): String {
-        return "Enemigo(num=$num,vida=$vida, ataque=$ataque, defensa=$defensa, velocidad=$velocidad, tipoEnemigo='$tipoEnemigo')"
-    }
+        return "Enemigo(num=$nombre)"
+    }//,vida=$vida, ataque=$ataque, defensa=$defensa, velocidad=$velocidad, tipoEnemigo='$tipoEnemigo'
 
 }

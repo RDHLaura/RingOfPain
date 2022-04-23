@@ -7,26 +7,45 @@ enum class  TipoSalas (
         ){
 
     //Revisar esto, no me gusta
-    PRUEBA (mutableMapOf("Enemigo" to 10), 10, 1, 4),
-    SALA_ESTANDAR(mutableMapOf("Enemigo" to 5,
-                            "Item" to 1
-                           /* "Puerta" to 3,
-                            "Pocion" to 2,
-                            "boost_stat" to 1,
-                            "Tesoro" to 1,*/
-                            ), 12, 1, 15),
+
+
+    ESTANDAR(mutableMapOf("Enemigo" to 5,
+                            "Item" to 2,
+                            /* "Puerta" to 3,
+                             "Pocion" to 2,
+                             "boost_stat" to 1,
+                             "Tesoro" to 1,*/
+    ), 12, 1, 15),
     GUARDIAS(mutableMapOf("Item" to 1, //tesoro
-                            "Enemigo" to 8),9, 1, 1), //mirar cuantas cartas son
+        "Enemigo" to 8),9, 1, 1), //mirar cuantas cartas son
     TIENDA (mutableMapOf("Item" to 3), 3, 1, 4),
     Finders_Keepers(mutableMapOf("Item" to 1), 1, 1, 2),
     FINAL (mutableMapOf("Enemigo" to 1), 1, 1, 1),
     AGRESIVIDAD(mutableMapOf("Enemigo" to 8,
-                            "Item" to 2
-                            /* "Puerta" to 2,
-                             "Pocion" to 2,
-                             "boost_stat" to 1,
-                             "Tesoro" to 1,*/
-                        ), 12, 1, 15),
+        "Item" to 2
+        /* "Puerta" to 2,
+         "Pocion" to 2,
+         "boost_stat" to 1,
+         "Tesoro" to 1,*/
+    ), 12, 1, 15),
+//
+//    ESTANDAR(mutableMapOf("Enemigo" to 5,
+//                            "Item" to 1,
+//                            /*"Puerta" to 1, //QLESLQ
+//                            "Pocion" to 2,
+//                            "boost_stat" to 1,
+//                            "Tesoro" to 1*/)),
+//    EMBOSCADA(mutableMapOf("Item" to 1, //tesoro
+//                            "Enemigo" to 5)), //mirar cuantas cartas son
+//    TIENDA (mutableMapOf("Item" to 3)),
+//    Finders_Keepers(mutableMapOf("Item" to 1)),
+//    FINAL (mutableMapOf("Enemigo" to 1)),
+//    AGRESIVIDAD(mutableMapOf("Enemigo" to 8,
+//                            "Item" to 2
+//                            /* "Puerta" to 2,
+//                             "Pocion" to 2,
+//                             "boost_stat" to 1,
+//                             "Tesoro" to 1,*/)),
 
 
 

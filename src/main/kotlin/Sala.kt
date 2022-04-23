@@ -10,14 +10,14 @@ class Sala (var tipoSala: TipoSalas) {
         var ultimas_salas= mutableListOf<TipoSalas>()
     }
     init{
-        if (tipoSala.salasRestantes <= 0) {
-            throw Exception("Se alcanzó el máx de ese tipo sala")
-        } else {
-            tipoSala.salasRestantes--
+//        if (tipoSala.salasRestantes <= 0) {
+//            throw Exception("Se alcanzó el máx de ese tipo sala")
+//        } else {
+  //          tipoSala.salasRestantes--
             totalSalasCreadas++
             ultimas_salas.add(tipoSala)
             generarSala()
-        }
+//        }
     }
 
     fun generarSala(){
@@ -27,9 +27,11 @@ class Sala (var tipoSala: TipoSalas) {
                 when(clase){
                     "Enemigo"-> cartasSala.add(Enemigo())
                     "Item"-> cartasSala.add(Item())
+                    //"Puerta"->cartasSala.add(Puerta())
                 }
             }
         }
+        //cartasSala.shuffle()
 
     }
 }
