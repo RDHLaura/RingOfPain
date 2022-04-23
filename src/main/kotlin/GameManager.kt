@@ -24,7 +24,6 @@ object GameManager {
     }
 
 
-
     //////////////creación de sala//////////////////////////
     fun siguienteSala(tipoSalas: TipoSalas){ //crea la sala y usa el bote si lo tiene equipado y con usos disponibles
         salaActual=Sala(tipoSalas)
@@ -59,46 +58,37 @@ object GameManager {
         }
     }
 
-    fun enemigosAdyacentes(enemigo: Enemigo):MutableList<Carta>{
-        var cartas_afectadas_explosion= mutableListOf<Carta>()
-         if (salaActual.cartasSala.indexOf(enemigo)==salaActual.cartasSala.lastIndex){//el enemigo está en la última posición
-            cartas_afectadas_explosion.add(salaActual.cartasSala[0])
-            cartas_afectadas_explosion.add(salaActual.cartasSala[salaActual.cartasSala.indexOf(enemigo)-1])
-        }
-        else if(salaActual.cartasSala.indexOf(enemigo)==0){//el enemigo está en la primera posición
-            cartas_afectadas_explosion.add(salaActual.cartasSala[salaActual.cartasSala.lastIndex])
-            cartas_afectadas_explosion.add(salaActual.cartasSala[salaActual.cartasSala.indexOf(enemigo)+1])
+    fun anterior(elemento:Carta):Carta?{
+        var lista= salaActual.cartasSala
+        if (lista.size < 2) return null //no puede haber un elemento anterior si hay menos de 2 elementos
+        val indice = lista.indexOf(elemento)
+        return if (indice==0)  lista.last() //si es el primero devuelve el ultimo
+        else lista.elementAt(indice-1) //si no, devuelve el anterior
 
-        }else if(salaActual.cartasSala.indexOf(enemigo)>0){
-            cartas_afectadas_explosion.add(salaActual.cartasSala[salaActual.cartasSala.indexOf(enemigo)-1])
-            cartas_afectadas_explosion.add(salaActual.cartasSala[salaActual.cartasSala.indexOf(enemigo)+1])
-        }
-        return cartas_afectadas_explosion
     }
 
+    fun siguiente(elemento:Carta):Carta?{
+        var lista= salaActual.cartasSala
+        if (lista.size < 2) return null //no puede haber un elemento anterior si hay menos de 2 elementos
+        val indice = lista.indexOf(elemento)
+        return if (indice==lista.size-1 && lista.first() is Enemigo) return lista.first() //si es el ultimo devuelve el primero
+        else  lista.elementAt(indice+1)//si no, devuelve el siguiente
+    }
 
-    private fun enemigo_ataque_explosivo(enemigo: Enemigo){ //tiene un problema, si mueren los dos adyacentes
-        //solo vuelve a llamar la función para el primero de la lista
+    fun adyacentes( elemento:Carta):List<Enemigo> {
+        val lista2 = mutableListOf<Enemigo>()
+        anterior(elemento)?.let { if(it is Enemigo)lista2.add(it) } //si no es nulo añadelo
+        siguiente(elemento)?.let { if(it is Enemigo)lista2.add(it) } //si no es nulo añadelo
+        return lista2.distinct()
+    }
+
+    private fun enemigo_ataque_explosivo(enemigo: Enemigo){
         ataqueEnemigoEstandar(enemigo)//ataca al jugador
-
-        val adyacentes = enemigosAdyacentes(enemigo)
+        val adyacentes = adyacentes(enemigo)
         enemigo.muerto()
-        println(Jugador.almas)
-
-        adyacentes.forEach {
-            if (it is Enemigo) {
-                enemigo.ataque(it) //adyacente sufre daño por enemigo explotado
-            }
-        }
-        adyacentes.forEach {
-            if (it is Enemigo && it.vida <= 0 && it.tipoEnemigo == "Explosion") {
-                println(salaActual.cartasSala)
-                if (salaActual.cartasSala.filter { it is Enemigo }.size >1){
-                    enemigo_ataque_explosivo(it)}
-                else
-                    it.muerto()
-            }
-        }
+        adyacentes.forEach { enemigo.ataque(it) }//adyacente sufre daño por enemigo explotado
+        adyacentes.filter{it.tipoEnemigo!="Explosion"}.forEach{if(it.vida<=0) it.muerto()}
+        adyacentes.filter { it.tipoEnemigo == "Explosion"}.forEach{if(it.vida<=0) enemigo_ataque_explosivo(it)}
     }
 
     fun enemigo_ataque_veneno(enemigo: Enemigo){
