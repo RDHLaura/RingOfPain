@@ -1,6 +1,6 @@
 class Enemigo():Carta() {
     companion object {
-        var numero:Int=-1
+        var numero:Int=0
     }
     init {
         numero++

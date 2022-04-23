@@ -22,14 +22,11 @@ class Sala (var tipoSala: TipoSalas) {
     }
 
     fun generarSala(){
-        if(tipoSala.nivel_sala==1){
-            for ((clase, cantidad) in tipoSala.cartas){
-                repeat(cantidad){
-                    when(clase){
-                        "Enemigo"-> cartasSala.add(Enemigo())
-                        "Item"-> cartasSala.add(Item())
-                    }
-
+        for ((clase, cantidad) in tipoSala.cartas){
+            repeat(cantidad){
+                when(clase){
+                    "Enemigo"-> cartasSala.add(Enemigo())
+                    "Item"-> cartasSala.add(Item())
                 }
             }
         }

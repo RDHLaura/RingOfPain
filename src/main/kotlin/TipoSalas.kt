@@ -7,6 +7,7 @@ enum class  TipoSalas (
         ){
 
     //Revisar esto, no me gusta
+    PRUEBA (mutableMapOf("Enemigo" to 10), 10, 1, 4),
     SALA_ESTANDAR(mutableMapOf("Enemigo" to 5,
                             "Item" to 1
                            /* "Puerta" to 3,
