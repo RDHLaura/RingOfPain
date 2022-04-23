@@ -1,3 +1,4 @@
+
 object GameManager {
     var mapaPuertasSalas= mutableMapOf<Int, MutableList<TipoSalas>>( //poner las salas correctas
         0 to mutableListOf<TipoSalas>(TipoSalas.ESTANDAR), //fija, da paso a una puerta de QLESLQ, después se llama a la siguiente sala
@@ -26,12 +27,11 @@ object GameManager {
 
     //////////////creación de sala//////////////////////////
     fun siguienteSala(tipoSalas: TipoSalas){ //crea la sala y usa el bote si lo tiene equipado y con usos disponibles
-        salaActual=Sala(tipoSalas)
+        //salaActual=Sala(tipoSalas)
         if(Inventario.objetos["Bote"]!=null && Inventario.objetos["Bote"]!!.usos>0){
             Inventario.usarOjetoConsumible(Inventario.objetos["Bote"]!!)
         }
     }
-
 
 
     //cambiar fórmulas de ataque TODO
@@ -67,10 +67,11 @@ object GameManager {
 
     fun anterior(elemento:Carta):Carta?{
         var lista= salaActual.cartasSala
-        if (lista.filter { it is Enemigo }.size < 2) return null //no puede haber un elemento anterior si hay menos de 2 elementos
+        if (lista.filter { it is Enemigo }.size < 2 ) return null //no puede haber un elemento anterior si hay menos de 2 elementos
         val indice = lista.indexOf(elemento)
-        return if (indice==0)  lista.last() //si es el primero devuelve el ultimo
-        else lista.elementAt(indice-1) //si no, devuelve el anterior
+        if(indice<0)return null
+        return if (indice==0)return  lista.last() //si es el primero devuelve el ultimo
+        else  lista[indice-1] //si no, devuelve el anterior
 
     }
 
@@ -78,14 +79,15 @@ object GameManager {
         var lista= salaActual.cartasSala
         if (lista.filter { it is Enemigo }.size< 2 ) return null //no puede haber un elemento anterior si hay menos de 2 elementos
         val indice = lista.indexOf(elemento)
-        return if (indice==lista.size-1 && lista.first() is Enemigo) return lista.first() //si es el ultimo devuelve el primero
+        if(indice<0)return null
+        return if (indice==lista.size-1) return lista.first() //si es el ultimo devuelve el primero
         else  lista.elementAt(indice+1)//si no, devuelve el siguiente
     }
 
     fun adyacentes( elemento:Carta):List<Enemigo> {
         val lista2 = mutableListOf<Enemigo>()
-        anterior(elemento)?.let { if(it is Enemigo && it!=elemento)lista2.add(it) } //si no es nulo añadelo
-        siguiente(elemento)?.let { if(it is Enemigo && it!=elemento)lista2.add(it) } //si no es nulo añadelo
+        anterior(elemento)?.let { if(it is Enemigo )lista2.add(it) } //si no es nulo añadelo
+        siguiente(elemento)?.let { if(it is Enemigo )lista2.add(it) } //si no es nulo añadelo
         return lista2.distinct()
     }
 
@@ -98,7 +100,6 @@ object GameManager {
             adyacentes.filter{it.tipoEnemigo!="Explosion"}.forEach{ if(it.vida<=0) it.muerto()}
             adyacentes.filter { it.tipoEnemigo == "Explosion"}.forEach{if(it.vida<=0) explotar(it)}
         }
-
     }
 
     fun enemigo_ataque_veneno(enemigo: Enemigo){

@@ -1,3 +1,4 @@
+
 class Item(
     //para pruebas, a sustituir
     var tipo:String="guantes", //Determina que hueco de inventario ocupa

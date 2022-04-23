@@ -1,3 +1,5 @@
+
+
 class Enemigo():Carta() {
     companion object {
         var nombres:Int=0
@@ -35,7 +37,7 @@ class Enemigo():Carta() {
     }
 
     override fun toString(): String {
-        return "Enemigo(num=$nombre)"
+        return "Clases.Enemigo(num=$nombre)"
     }//,vida=$vida, ataque=$ataque, defensa=$defensa, velocidad=$velocidad, tipoEnemigo='$tipoEnemigo'
 
 }

@@ -1,3 +1,4 @@
+
 object Jugador:Carta () {
     //stats principales
     var almas=0

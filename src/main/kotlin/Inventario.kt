@@ -1,3 +1,4 @@
+
 object Inventario {
 
     var objetos= mutableMapOf<String,Item?>(
