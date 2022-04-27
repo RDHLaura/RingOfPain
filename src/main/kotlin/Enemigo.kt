@@ -13,6 +13,7 @@ class Enemigo():Carta() {
     var velocidad=3
     var tipoEnemigo="Explosion"
     var almas=3
+    var envenenado=false
 
     init {
         nombres++

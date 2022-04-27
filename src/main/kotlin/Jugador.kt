@@ -7,7 +7,7 @@ object Jugador:Carta () {
     var defensa=2
     var velocidad=4
     var lucidez=0 //Bonifica el efecto curativo de pociones/aumenta la resistencia a la maldición (50 + lucidez)%/Almas adicionales lucidez*5 %/Permite obtener más recursos
-
+    var envenenado=false //indica si el jugador está afectado por veneno
     //varian en función de las stats principales y de los objetos
     var ataqueCritico=0 //porcentaje
     var esquiva= 0 //Aumenta por velocidad (la mitad) y por objetos

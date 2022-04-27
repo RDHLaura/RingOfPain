@@ -13,10 +13,17 @@ object GameManager {
         9 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers, TipoSalas.ESTANDAR),
     )
     var salaActual:Sala= Sala(mapaPuertasSalas[0]!![0]) //se inicia con la principal creada
+    var turno=0
 
 
     //////////////////interacción jugador con la carta seleccionada//////////////////////////////
+    fun actualizarTurno(){
+        turno++
+        danyoVeneno()
+    }
+
     fun accionJugador(carta: Carta){ //el jugador selecciona una carta del anillo ataca/equipa
+        actualizarTurno()
         when (carta){
             is Item->Inventario.addObjeto(carta) //crear una función que equipe cualquier objeto TODO
             is Enemigo -> JugadorAtacaEnemigo(carta)
@@ -43,6 +50,7 @@ object GameManager {
         if (Jugador.velocidad>enemigo.velocidad){
             Jugador.ataque(enemigo)
             ataqueEnemigo(enemigo)
+
         }
         else {
             ataqueEnemigo(enemigo)
@@ -52,10 +60,11 @@ object GameManager {
 
 
     private fun ataqueEnemigo(enemigo: Enemigo){ //selecciona el tipo de ataque que realizará el enemigo dependiendo del tipo que sea
+
         when(enemigo.tipoEnemigo){
             "Normal"-> enemigoAtacaJugador(enemigo)
             "Explosion"->explotar(enemigo)
-            "Veneno"->enemigo_ataque_veneno(enemigo)
+            "Veneno"->enemigoLanzaVeneno(enemigo)
         }
     }
 
@@ -102,8 +111,21 @@ object GameManager {
         }
     }
 
-    fun enemigo_ataque_veneno(enemigo: Enemigo){
-        //TODO
+    fun enemigoLanzaVeneno(enemigo: Enemigo){ //enemigo venenoso
+        Jugador.envenenado=true
+        enemigoAtacaJugador(enemigo)
+
+    }
+    fun danyoVeneno(){ //actualiza el daño de las cartas envenadas en el sig turno del veneno
+        salaActual.cartasSala.forEach{ // TODO implementar función para que el jugador pueda envenenar cartas
+            if(it is Enemigo && it.envenenado==true){
+                enemigoLanzaVeneno(it)
+                it.envenenado=false
+            }
+        }
+        if(Jugador.envenenado==true){
+            // TODO aplicar segundo daño a jugador
+        }
     }
 
 
