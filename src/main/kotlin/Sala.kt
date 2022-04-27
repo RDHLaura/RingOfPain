@@ -9,6 +9,8 @@ class Sala (var tipoSala: TipoSalas) {
     companion object{
         var totalSalasCreadas=0
         var ultimas_salas= mutableListOf<TipoSalas>()
+        var minimoTier=1 //usado para calcular el tier
+        var m=0 //usado para los tiers tambien
     }
     init{
         if (tipoSala.salasRestantes <= 0) {
@@ -16,6 +18,10 @@ class Sala (var tipoSala: TipoSalas) {
         } else {
             tipoSala.salasRestantes--
             totalSalasCreadas++
+            m++   //con esto cada 3 veces que se generen salas aumentamos n  y devolvemos m a cero
+            if (m==2){
+                minimoTier++
+                m=0}
             ultimas_salas.add(tipoSala)
             generarSala()
         }
@@ -33,6 +39,17 @@ class Sala (var tipoSala: TipoSalas) {
                 }
             }
         }
+    }
+
+
+    fun generarTier():Int{
+        if (totalSalasCreadas>5){
+            var maxTier:Int= 5
+            return (minimoTier..maxTier).random()}
+
+        else{
+            var maxTier:Int= totalSalasCreadas
+            return (minimoTier..maxTier).random()}
     }
 
     fun rotarDerecha(){
