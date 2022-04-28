@@ -1,18 +1,7 @@
 
 object GameManager {
-    var mapaPuertasSalas= mutableMapOf<Int, MutableList<TipoSalas>>( //poner las salas correctas
-        0 to mutableListOf<TipoSalas>(TipoSalas.ESTANDAR), //fija, da paso a una puerta de QLESLQ, después se llama a la siguiente sala
-        2 to mutableListOf<TipoSalas>(TipoSalas.ESTANDAR), //fija
-        2 to mutableListOf<TipoSalas>(TipoSalas.ESTANDAR), //
-        3 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers, TipoSalas.ESTANDAR),
-        4 to mutableListOf<TipoSalas>(TipoSalas.ESTANDAR),
-        5 to mutableListOf<TipoSalas>(TipoSalas.AGRESIVIDAD,TipoSalas.TIENDA, TipoSalas.ESTANDAR),
-        6 to mutableListOf<TipoSalas>(TipoSalas.ESTANDAR),
-        7 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers, TipoSalas.ESTANDAR),
-        8 to mutableListOf<TipoSalas>(TipoSalas.ESTANDAR),
-        9 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers, TipoSalas.ESTANDAR),
-    )
-    var salaActual:Sala= Sala(mapaPuertasSalas[0]!![0]) //se inicia con la principal creada
+
+    var salaActual:Sala= Sala(TipoSalas.ESTANDAR) //se inicia con la principal creada
     var turno=0
 
 
@@ -33,10 +22,16 @@ object GameManager {
 
 
     //////////////creación de sala//////////////////////////
-    fun siguienteSala(tipoSalas: TipoSalas){ //crea la sala y usa el bote si lo tiene equipado y con usos disponibles
-        //salaActual=Sala(tipoSalas)
+    fun siguienteSala(tipoSalas: TipoSalas=TipoSalas.ESTANDAR){ //crea la sala y usa el bote si lo tiene equipado y con usos disponibles
+        //cif(Sala.ultimas_salas.last() in listOf<TipoSalas>(TipoSalas.Finders_Keepers, TipoSalas.TIENDA))
+            //
         if(Inventario.objetos["Bote"]!=null && Inventario.objetos["Bote"]!!.usos>0){
             Inventario.usarOjetoConsumible(Inventario.objetos["Bote"]!!)
+            if(tipoSalas==null){
+                salaActual=Sala(TipoSalas.ESTANDAR)
+            }else{
+                salaActual=Sala(tipoSalas)
+            }
         }
     }
 
@@ -100,7 +95,7 @@ object GameManager {
         return lista2.distinct()
     }
 
-    fun explotar(enemigo: Enemigo){ //TODO al meter los items, cuando estos están en ciertas posiciones da error de indice fuera de rango
+    fun explotar(enemigo: Enemigo){
         enemigoAtacaJugador(enemigo)//ataca al jugador
         val adyacentes = adyacentes(enemigo)
         enemigo.muerto()
