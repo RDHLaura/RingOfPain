@@ -5,8 +5,10 @@ class Sala (var tipoSala: TipoSalas) {
     var cartasSala= mutableListOf<Carta>()
     //MAPA DE SALA: 10 SALAS
     companion object{
-        var numSalaActual=0
+        var totalSalasCreadas=0
         var ultimas_salas= mutableListOf<TipoSalas>()
+        var minimoTier=1 //usado para calcular el tier
+        var m=0 //usado para los tiers tambien
     }
     init{
 //        if (tipoSala.salasRestantes <= 0) {
@@ -18,7 +20,11 @@ class Sala (var tipoSala: TipoSalas) {
             var salaPrueba=mutableListOf<Carta>(Enemigo(), Enemigo(),Enemigo(), Item(), Enemigo(),Enemigo(), Item())
             generarSala()
             barajar()
-            numSalaActual++
+            totalSalasCreadas++
+            m++   //con esto cada 3 veces que se generen salas aumentamos n  y devolvemos m a cero
+            if (m==2){
+                minimoTier++
+                m=0}
 //        }
     }
     fun barajar(){
@@ -36,6 +42,15 @@ class Sala (var tipoSala: TipoSalas) {
         8 to mutableListOf<TipoSalas>(TipoSalas.ESTANDAR),
         9 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers, TipoSalas.ESTANDAR),
     )
+    fun generarTier():Int{
+        if (totalSalasCreadas>5){
+            var maxTier:Int= 5
+            return (minimoTier..maxTier).random()}
+
+        else{
+            var maxTier:Int= totalSalasCreadas
+            return (minimoTier..maxTier).random()}
+    }
     fun generarSala(){
 
         for ((clase, cantidad) in tipoSala.cartas){
@@ -43,11 +58,12 @@ class Sala (var tipoSala: TipoSalas) {
                 when(clase){
                     "Clases.Enemigo"-> cartasSala.add(Enemigo())
                     "Clases.Item"-> cartasSala.add(Item())
-                    "Clases.Puerta"->mapaPuertasSalas[numSalaActual]!!.forEach{cartasSala.add(Puerta(it))}
+                    "Clases.Puerta"->mapaPuertasSalas[totalSalasCreadas]!!.forEach{cartasSala.add(Puerta(it))}
                 }
             }
         }
         cartasSala.shuffle()
         ultimas_salas.add(tipoSala)
     }
+
 }
