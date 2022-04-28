@@ -35,6 +35,16 @@ class Sala (var tipoSala: TipoSalas) {
         }
     }
 
+    fun generarTier():Int{
+        if (totalSalasCreadas>5){
+            var maxTier:Int= 5
+            return (minimoTier..maxTier).random()}
+
+        else{
+            var maxTier:Int= totalSalasCreadas
+            return (minimoTier..maxTier).random()}
+    }
+    
     fun rotarDerecha(){
         Collections.rotate(cartasSala,1)
     }
