@@ -1,3 +1,4 @@
+import java.util.Collections
 class Sala (var tipoSala: TipoSalas) {
     /*In each run, there are 15 Clases.main dungeon rooms, 2 Finders Keepers, 4 Shops and a floor 16 (?) ending floor,
   plus optional event dungeons that the player can choose to visit, and boss dungeon(s) - varying on which ending is taken.*/
@@ -65,5 +66,12 @@ class Sala (var tipoSala: TipoSalas) {
         cartasSala.shuffle()
         ultimas_salas.add(tipoSala)
     }
+    fun rotarDerecha(){
+        Collections.rotate(cartasSala,1)
+    }
 
+    fun rotarIzquierda(){
+        Collections.rotate(cartasSala,-1)
+
+    }
 }

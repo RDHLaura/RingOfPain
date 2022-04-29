@@ -13,9 +13,17 @@ object Jugador:Carta () {
     var esquiva= 0 //Aumenta por velocidad (la mitad) y por objetos
     var sigilo=0 //Aumenta por velocidad (la mitad) y por objetos
     var resistencia_maldiciones=50 //si no hay cartas que aumenten este stat directamente se puede eliminar y se usaria la lucidez + 50, se usa como %
+    var danioPenetrante=0
 
     fun ataque(enemigo: Enemigo){
-        enemigo.vida-= ataque //cambiar formula TODO
+        //el daño que hace teenienddo en cuenta la defensa
+        if(enemigo.defensa>Jugador.ataque){
+            var danioDefensa=0
+            enemigo.vida=enemigo.vida- danioPenetrante}
+        else{
+            var danioDefensa=Jugador.ataque-enemigo.defensa
+                if((0..100).random()<=Jugador.ataqueCritico){danioDefensa*=2}
+            enemigo.vida=enemigo.vida-(danioDefensa)- danioPenetrante }
     }
     fun usarItem(item: Item){
         Jugador.vida+=item.vida
