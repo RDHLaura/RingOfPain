@@ -13,8 +13,8 @@ enum class  TipoSalas (
 
     ESTANDAR(mutableMapOf("Clases.Enemigo" to 6,
                             "Clases.Item" to 3,
-                            /* "Clases.Puerta" to 1,
-                             "Pocion" to 2,
+                             "Clases.Puerta" to 3,
+                             /*"Pocion" to 2,
                              "boost_stat" to 1,
                              "Tesoro" to 1,*/
     ), 12, 1, 15),

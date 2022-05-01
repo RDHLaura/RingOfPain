@@ -23,17 +23,20 @@ object GameManager {
 
     //////////////creación de sala//////////////////////////
     fun siguienteSala(tipoSalas: TipoSalas=TipoSalas.ESTANDAR){ //crea la sala y usa el bote si lo tiene equipado y con usos disponibles
-        //cif(Sala.ultimas_salas.last() in listOf<TipoSalas>(TipoSalas.Finders_Keepers, TipoSalas.TIENDA))
-            //
+
         if(Inventario.objetos["Bote"]!=null && Inventario.objetos["Bote"]!!.usos>0){
             Inventario.usarOjetoConsumible(Inventario.objetos["Bote"]!!)
-            salaActual=Sala(tipoSalas)
+        }
+        when(Sala.totalSalasCreadas){ // crea salas fijas en ciertas posiciones del mapa de salas
+            1->salaActual=Sala(TipoSalas.Finders_Keepers)
+            5 -> salaActual=Sala(TipoSalas.TIENDA)
+            8 -> salaActual=Sala(TipoSalas.Finders_Keepers)
+            9 -> salaActual=Sala(TipoSalas.FINAL)
+            else ->  salaActual=Sala(tipoSalas)
         }
     }
 
-
     //cambiar fórmulas de ataque TODO
-
     ////////////////Funciones ataques///////////////////
 
     fun JugadorAtacaEnemigo(enemigo: Enemigo){ //el jugador realiza el ataque al enemigo seleccionado

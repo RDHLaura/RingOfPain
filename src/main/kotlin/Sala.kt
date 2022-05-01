@@ -12,21 +12,15 @@ class Sala (var tipoSala: TipoSalas) {
         var m=0 //usado para los tiers tambien
     }
     init{
-//        if (tipoSala.salasRestantes <= 0) {
-//            throw Exception("Se alcanzó el máx de ese tipo sala")
-//        } else {
-  //          tipoSala.salasRestantes--
-            totalSalasCreadas++
-            ultimas_salas.add(tipoSala)
-            //var salaPrueba=mutableListOf<Carta>(Enemigo(), Enemigo(),Enemigo(), Item(), Enemigo(),Enemigo(), Item())
-            generarSala()
-            barajar()
+        totalSalasCreadas++
+        ultimas_salas.add(tipoSala)
+        generarSala()
+        barajar()
 
-            m++   //con esto cada 3 veces que se generen salas aumentamos n  y devolvemos m a cero
-            if (m==2){
-                minimoTier++
-                m=0}
-//        }
+        m++   //con esto cada 3 veces que se generen salas aumentamos n  y devolvemos m a cero
+        if (m==2){
+            minimoTier++
+            m=0}
     }
     fun barajar(){
         cartasSala.shuffle()
@@ -44,23 +38,31 @@ class Sala (var tipoSala: TipoSalas) {
 
 
     fun generarSala(){
-        var puertas1sala= listOf<TipoSalas>(TipoSalas.Finders_Keepers, TipoSalas.ESTANDAR)
+        /*es llamada desde la función siguienteSala del GM,
+        * crea un máximo de 3 puertas por sala estandar (las que tienen puertas, las demás pasan directamente a una sala
+        * estándar), con el map mapaSalas establezco las puertas que va a tener cada sala.
+        * Cuando es una sala con puertas, recorre el map incluyendo todas las salas en la variable puertas
+        * que después de eliminar las puertas repetidas se incluirán en la sala*/
+        val mapaSalas= mapOf<Int, List<TipoSalas>>(
+            1 to listOf<TipoSalas>(TipoSalas.Finders_Keepers, TipoSalas.Finders_Keepers,TipoSalas.Finders_Keepers),
+            3 to listOf<TipoSalas>(TipoSalas.GUARDIAS, TipoSalas.AGRESIVIDAD,TipoSalas.ESTANDAR),
+            4 to listOf<TipoSalas>(TipoSalas.GUARDIAS, TipoSalas.AGRESIVIDAD,TipoSalas.ESTANDAR),
+            5 to listOf<TipoSalas>(TipoSalas.TIENDA, TipoSalas.TIENDA, TipoSalas.TIENDA),
+            7 to listOf<TipoSalas>(TipoSalas.GUARDIAS, TipoSalas.AGRESIVIDAD,TipoSalas.ESTANDAR),
+            8 to listOf<TipoSalas>(TipoSalas.Finders_Keepers, TipoSalas.Finders_Keepers,TipoSalas.Finders_Keepers)
+        )
+        var puertas= mutableListOf<Puerta>()
         for ((clase, cantidad) in tipoSala.cartas){
-            repeat(cantidad){
+            for (x in 0..cantidad-1){
                 when(clase){
                     "Clases.Enemigo"-> cartasSala.add(Enemigo(generarTier()))
                     "Clases.Item"-> cartasSala.add(Item())
-                    "Clases.Puerta"->{
-                        if(totalSalasCreadas==0){
-                        cartasSala.add(Puerta(puertas1sala[cantidad]))
-                        }
-                    }
+                    "Clases.Puerta"->puertas.add(Puerta(mapaSalas[totalSalasCreadas]!![x]))
                 }
             }
         }
-        if(tipoSala.cartas.containsKey("Clases.Puerta")){
-            cartasSala.add(Puerta(TipoSalas.ESTANDAR))
-        }
+
+        cartasSala.addAll(puertas.distinct())
         barajar()
         ultimas_salas.add(tipoSala)
     }
