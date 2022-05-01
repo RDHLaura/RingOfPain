@@ -1,28 +1,45 @@
 
 
-class Enemigo():Carta() {
-    companion object {
-        var nombres:Int=0
+class Enemigo(tier:Int):Carta() {
+    val enemigoElegido: ClaseEnemigo
+
+    init{
+        val enemigosTotales = ClaseEnemigo.values()
+        val enemigosMismoTier = enemigosTotales.filter { it.vitalidad == tier }
+        enemigoElegido = enemigosMismoTier.random()
     }
+    override var nombre:String=""
+    override var imagen = "sprites/enemigos/$enemigoElegido.png"
+    var vidaActual:Int = enemigoElegido.vitalidad;
+    val vidaTotal = enemigoElegido.vitalidad
+    var danioFisico=enemigoElegido.danioFisico
+    var danioEspecial: Int=enemigoElegido.danioEspecial
+    var danioPenetrante: Int=enemigoElegido.danioPenetrante
+    var defensa=enemigoElegido.defensa
+    var velocidad=enemigoElegido.velocidad
+    var efectoAlMorir: Efecto?=enemigoElegido.efectoAlMorir
+    var tipoDanioEspecial=enemigoElegido.tipoDanioEspecial
+    var almas=enemigoElegido.almas
+    var tier: Int=enemigoElegido.tier
 
-    //para pruebas, a sustituir
-    var nombre:Int=0
-    var vida:Int =6
-    var ataque=3
-    var defensa=1
-    var velocidad=3
-    var tipoEnemigo="Explosion"
-    var almas=3
-    var envenenado=false
     var puedeAtacar=true
+    var envenenado=false
 
-    init {
-        nombres++
-        nombre= nombres
+
+    fun porcentajeVidaRestante():Double
+    {
+        return (1-(vidaTotal-vidaActual)/vidaTotal).toDouble()
     }
 
     //////////////////////////////////////////////////////////////////
     ////////////////////////Poner en la clase oficial///////////////
+    fun comprobarMuerto():Boolean{
+         if (vidaActual<=0){
+             muerto()
+             return true
+        }else return false
+
+    }
     fun muerto(){ //añade las almas al jugador y lo elimina de la lista de cartas de la sala
         Jugador.almas+=this.almas
         GameManager.salaActual.cartasSala.remove(this)
@@ -32,10 +49,10 @@ class Enemigo():Carta() {
     }
 
     fun ataque(jugador:Jugador){
-        jugador.vida-=ataque //Cambiar formula TODO
+        jugador.vida-=danioFisico //Cambiar formula TODO
     }
     fun ataque(enemigo: Enemigo){//Para ataques expansivos
-        enemigo.vida-=ataque //Cambiar formula TODO
+        enemigo.vidaActual-=danioFisico //Cambiar formula TODO
     }
 
     override fun toString(): String {

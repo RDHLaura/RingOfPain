@@ -5,6 +5,7 @@ enum class  TipoSalas (
     var num_cartas_sala:Int,
     var nivel_sala:Int, //con el nivel de la sala crear un selector para items y enemigos
     var salasRestantes:Int
+
         ){
 
     //Revisar esto, no me gusta
@@ -12,7 +13,7 @@ enum class  TipoSalas (
 
     ESTANDAR(mutableMapOf("Clases.Enemigo" to 6,
                             "Clases.Item" to 3,
-                            /* "Clases.Puerta" to 3,
+                            /* "Clases.Puerta" to 1,
                              "Pocion" to 2,
                              "boost_stat" to 1,
                              "Tesoro" to 1,*/

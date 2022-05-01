@@ -19,11 +19,11 @@ object Jugador:Carta () {
         //el daño que hace teenienddo en cuenta la defensa
         if(enemigo.defensa>Jugador.ataque){
             var danioDefensa=0
-            enemigo.vida=enemigo.vida- danioPenetrante}
+            enemigo.vidaActual=enemigo.vidaActual- danioPenetrante}
         else{
             var danioDefensa=Jugador.ataque-enemigo.defensa
                 if((0..100).random()<=Jugador.ataqueCritico){danioDefensa*=2}
-            enemigo.vida=enemigo.vida-(danioDefensa)- danioPenetrante }
+            enemigo.vidaActual=enemigo.vidaActual-(danioDefensa)- danioPenetrante }
     }
     fun usarItem(item: Item){
         Jugador.vida+=item.vida

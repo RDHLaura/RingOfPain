@@ -41,11 +41,10 @@ object GameManager {
     ////////////////Funciones ataques///////////////////
 
     fun JugadorAtacaEnemigo(enemigo: Enemigo){ //el jugador realiza el ataque al enemigo seleccionado
-
         if (Jugador.velocidad>enemigo.velocidad){
             Jugador.ataque(enemigo)
+            enemigo.comprobarMuerto()
             ataqueEnemigo(enemigo)
-
         }
         else {
             ataqueEnemigo(enemigo)
@@ -55,8 +54,7 @@ object GameManager {
 
 
     private fun ataqueEnemigo(enemigo: Enemigo){ //selecciona el tipo de ataque que realizará el enemigo dependiendo del tipo que sea
-
-        when(enemigo.tipoEnemigo){
+        when(enemigo.tipoDanioEspecial){
             "Normal"-> enemigoAtacaJugador(enemigo)
             "Explosion"->explotar(enemigo)
             "Veneno"->enemigoLanzaVeneno(enemigo)
@@ -68,7 +66,7 @@ object GameManager {
             enemigo.ataque(Jugador)
         }
     }
-
+////////////////función explotar//////////////
     fun anterior(elemento:Carta):Carta?{
         var lista= salaActual.cartasSala
         if (lista.filter { it is Enemigo }.size < 2 ) return null //no puede haber un elemento anterior si hay menos de 2 elementos
@@ -76,7 +74,6 @@ object GameManager {
         if(indice<0)return null
         return if (indice==0)return  lista.last() //si es el primero devuelve el ultimo
         else  lista[indice-1] //si no, devuelve el anterior
-
     }
 
     fun siguiente(elemento:Carta):Carta?{
@@ -100,16 +97,17 @@ object GameManager {
         val adyacentes = adyacentes(enemigo)
         enemigo.muerto()
         if(adyacentes.isNotEmpty()){
-            adyacentes.forEach { it.vida=0 }//adyacente sufre daño por enemigo explotado
-            adyacentes.filter{it.tipoEnemigo!="Explosion"}.forEach{ if(it.vida<=0) it.muerto()}
-            adyacentes.filter { it.tipoEnemigo == "Explosion"}.forEach{if(it.vida<=0) explotar(it)}
+            adyacentes.forEach { it.vidaActual=0 }//adyacente sufre daño por enemigo explotado
+            adyacentes.filter{it.tipoDanioEspecial!="Explosion"}.forEach{ if(it.vidaActual<=0) it.muerto()}
+            adyacentes.filter { it.tipoDanioEspecial == "Explosion"}.forEach{if(it.vidaActual<=0) explotar(it)}
         }
     }
 
+
+/////////////////función veneno/////////////////
     fun enemigoLanzaVeneno(enemigo: Enemigo){ //enemigo venenoso
         Jugador.envenenado=true
         enemigoAtacaJugador(enemigo)
-
     }
     fun danyoVeneno(){ //actualiza el daño de las cartas envenadas en el sig turno del veneno
         salaActual.cartasSala.forEach{ // TODO implementar función para que el jugador pueda envenenar cartas
@@ -119,7 +117,7 @@ object GameManager {
             }
         }
         if(Jugador.envenenado==true){
-            // TODO aplicar segundo daño a jugador
+            //TODO aplicar segundo daño a jugador
         }
     }
 

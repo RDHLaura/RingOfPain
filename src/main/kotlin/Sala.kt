@@ -31,18 +31,7 @@ class Sala (var tipoSala: TipoSalas) {
     fun barajar(){
         cartasSala.shuffle()
     }
-    var mapaPuertasSalas= mutableMapOf<Int, MutableList<TipoSalas>>( //poner las salas correctas
-        0 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers), //fija, da paso a una puerta de QLESLQ, después se llama a la siguiente sala
-        1 to mutableListOf<TipoSalas>(TipoSalas.ESTANDAR), //fija
-        2 to mutableListOf<TipoSalas>(TipoSalas.ESTANDAR), //
-        3 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers, TipoSalas.ESTANDAR),
-        4 to mutableListOf<TipoSalas>(TipoSalas.ESTANDAR),
-        5 to mutableListOf<TipoSalas>(TipoSalas.AGRESIVIDAD,TipoSalas.TIENDA, TipoSalas.ESTANDAR),
-        6 to mutableListOf<TipoSalas>(TipoSalas.ESTANDAR),
-        7 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers, TipoSalas.ESTANDAR),
-        8 to mutableListOf<TipoSalas>(TipoSalas.ESTANDAR),
-        9 to mutableListOf<TipoSalas>(TipoSalas.Finders_Keepers, TipoSalas.ESTANDAR),
-    )
+
     fun generarTier():Int{
         if (totalSalasCreadas>5){
             var maxTier:Int= 5
@@ -52,18 +41,32 @@ class Sala (var tipoSala: TipoSalas) {
             var maxTier:Int= totalSalasCreadas
             return (minimoTier..maxTier).random()}
     }
-    fun generarSala(){
+    fun generar1Sala(){
+        if(totalSalasCreadas==0){
+            var puertas1sala= listOf<TipoSalas>(TipoSalas.Finders_Keepers, TipoSalas.ESTANDAR)
 
+        }
+    }
+
+    fun generarSala(){
+        var puertas1sala= listOf<TipoSalas>(TipoSalas.Finders_Keepers, TipoSalas.ESTANDAR)
         for ((clase, cantidad) in tipoSala.cartas){
             repeat(cantidad){
                 when(clase){
                     "Clases.Enemigo"-> cartasSala.add(Enemigo())
                     "Clases.Item"-> cartasSala.add(Item())
-                    "Clases.Puerta"->mapaPuertasSalas[totalSalasCreadas]!!.forEach{cartasSala.add(Puerta(it))}
+                    "Clases.Puerta"->{
+                        if(totalSalasCreadas==0){
+                        cartasSala.add(Puerta(puertas1sala[cantidad]))
+                        }
+                    }
                 }
             }
         }
-        cartasSala.shuffle()
+        if(tipoSala.cartas.containsKey("Clases.Puerta")){
+            cartasSala.add(Puerta(TipoSalas.ESTANDAR))
+        }
+        barajar()
         ultimas_salas.add(tipoSala)
     }
     fun rotarDerecha(){
