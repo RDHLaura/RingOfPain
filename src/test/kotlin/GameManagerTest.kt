@@ -5,11 +5,11 @@ import org.junit.jupiter.api.Assertions.*
 
  internal class GameManagerTest{
 
-    val e1 = Enemigo()
-    val e2 = Enemigo()
+    val e1 = Enemigo(1)
+    val e2 = Enemigo(2)
     val e3 = Item()
-    val e4 = Enemigo()
-    val e5 = Enemigo()
+    val e4 = Enemigo(1)
+    val e5 = Enemigo(1)
 
     val lista = mutableListOf<Carta>(e1,e2,e3,e4,e5)
     val lista2 = mutableListOf<Carta>(e1)

@@ -16,12 +16,12 @@ class Sala (var tipoSala: TipoSalas) {
 //            throw Exception("Se alcanzó el máx de ese tipo sala")
 //        } else {
   //          tipoSala.salasRestantes--
-
+            totalSalasCreadas++
             ultimas_salas.add(tipoSala)
-            var salaPrueba=mutableListOf<Carta>(Enemigo(), Enemigo(),Enemigo(), Item(), Enemigo(),Enemigo(), Item())
+            //var salaPrueba=mutableListOf<Carta>(Enemigo(), Enemigo(),Enemigo(), Item(), Enemigo(),Enemigo(), Item())
             generarSala()
             barajar()
-            totalSalasCreadas++
+
             m++   //con esto cada 3 veces que se generen salas aumentamos n  y devolvemos m a cero
             if (m==2){
                 minimoTier++
@@ -41,19 +41,14 @@ class Sala (var tipoSala: TipoSalas) {
             var maxTier:Int= totalSalasCreadas
             return (minimoTier..maxTier).random()}
     }
-    fun generar1Sala(){
-        if(totalSalasCreadas==0){
-            var puertas1sala= listOf<TipoSalas>(TipoSalas.Finders_Keepers, TipoSalas.ESTANDAR)
 
-        }
-    }
 
     fun generarSala(){
         var puertas1sala= listOf<TipoSalas>(TipoSalas.Finders_Keepers, TipoSalas.ESTANDAR)
         for ((clase, cantidad) in tipoSala.cartas){
             repeat(cantidad){
                 when(clase){
-                    "Clases.Enemigo"-> cartasSala.add(Enemigo())
+                    "Clases.Enemigo"-> cartasSala.add(Enemigo(generarTier()))
                     "Clases.Item"-> cartasSala.add(Item())
                     "Clases.Puerta"->{
                         if(totalSalasCreadas==0){

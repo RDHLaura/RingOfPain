@@ -5,10 +5,10 @@ class Enemigo(tier:Int):Carta() {
 
     init{
         val enemigosTotales = ClaseEnemigo.values()
-        val enemigosMismoTier = enemigosTotales.filter { it.vitalidad == tier }
+        val enemigosMismoTier = enemigosTotales.filter { it.tier == tier }
         enemigoElegido = enemigosMismoTier.random()
     }
-    override var nombre:String=""
+    override var nombre:String=enemigoElegido.nombre
     override var imagen = "sprites/enemigos/$enemigoElegido.png"
     var vidaActual:Int = enemigoElegido.vitalidad;
     val vidaTotal = enemigoElegido.vitalidad
@@ -56,7 +56,8 @@ class Enemigo(tier:Int):Carta() {
     }
 
     override fun toString(): String {
-        return "Clases.Enemigo(num=$nombre)"
-    }//,vida=$vida, ataque=$ataque, defensa=$defensa, velocidad=$velocidad, tipoEnemigo='$tipoEnemigo'
+        return "Enemigo(enemigoElegido=$enemigoElegido, nombre='$nombre', vidaActual=$vidaActual, velocidad=$velocidad,almas=$almas, tier=$tier)"
+    }
+
 
 }

@@ -27,11 +27,7 @@ object GameManager {
             //
         if(Inventario.objetos["Bote"]!=null && Inventario.objetos["Bote"]!!.usos>0){
             Inventario.usarOjetoConsumible(Inventario.objetos["Bote"]!!)
-            if(tipoSalas==null){
-                salaActual=Sala(TipoSalas.ESTANDAR)
-            }else{
-                salaActual=Sala(tipoSalas)
-            }
+            salaActual=Sala(tipoSalas)
         }
     }
 
@@ -55,9 +51,9 @@ object GameManager {
 
     private fun ataqueEnemigo(enemigo: Enemigo){ //selecciona el tipo de ataque que realizará el enemigo dependiendo del tipo que sea
         when(enemigo.tipoDanioEspecial){
-            "Normal"-> enemigoAtacaJugador(enemigo)
-            "Explosion"->explotar(enemigo)
-            "Veneno"->enemigoLanzaVeneno(enemigo)
+            null-> enemigoAtacaJugador(enemigo)
+            TipoDanio.EXPLOSION->explotar(enemigo)
+            TipoDanio.VENENO->enemigoLanzaVeneno(enemigo)
         }
     }
 
@@ -98,8 +94,8 @@ object GameManager {
         enemigo.muerto()
         if(adyacentes.isNotEmpty()){
             adyacentes.forEach { it.vidaActual=0 }//adyacente sufre daño por enemigo explotado
-            adyacentes.filter{it.tipoDanioEspecial!="Explosion"}.forEach{ if(it.vidaActual<=0) it.muerto()}
-            adyacentes.filter { it.tipoDanioEspecial == "Explosion"}.forEach{if(it.vidaActual<=0) explotar(it)}
+            adyacentes.filter{it.tipoDanioEspecial!=TipoDanio.EXPLOSION}.forEach{ if(it.vidaActual<=0) it.muerto()}
+            adyacentes.filter { it.tipoDanioEspecial == TipoDanio.EXPLOSION}.forEach{if(it.vidaActual<=0) explotar(it)}
         }
     }
 
