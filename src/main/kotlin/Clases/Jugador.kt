@@ -1,4 +1,4 @@
-
+package Clases
 object Jugador:Carta () {
     //stats principales
     var almas=0
@@ -25,31 +25,7 @@ object Jugador:Carta () {
                 if((0..100).random()<=Jugador.ataqueCritico){danioDefensa*=2}
             enemigo.vidaActual=enemigo.vidaActual-(danioDefensa)- danioPenetrante }
     }
-    fun usarItem(item: Item){
-        Jugador.vida+=item.vida
-        Jugador.ataque+=item.ataque
-        Jugador.defensa+=item.defensa
-        Jugador.velocidad+=item.velocidad
-        Jugador.lucidez+=item.lucidez
-        Jugador.ataqueCritico+=item.ataqueCritico + item.lucidez
-        Jugador.esquiva+=item.esquiva + (item.velocidad/2)
-        Jugador.sigilo+=item.sigilo + (item.velocidad/2)
-        Jugador.resistencia_maldiciones+= item.resistencia_maldiciones + item.lucidez
 
-    }
-
-
-    fun eliminarItem(item: Item){
-        Jugador.vida-=item.vida
-        Jugador.ataque-=item.ataque
-        Jugador.defensa-=item.defensa
-        Jugador.velocidad-=item.velocidad
-        Jugador.lucidez-=item.lucidez
-        Jugador.ataqueCritico-=item.ataqueCritico
-        Jugador.esquiva-=item.esquiva - (item.velocidad/2)
-        Jugador.sigilo-=item.sigilo - (item.velocidad/2)
-        Jugador.resistencia_maldiciones-= item.resistencia_maldiciones + item.lucidez
-    }
 
 
 

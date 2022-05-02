@@ -1,4 +1,4 @@
-
+package Clases
 object Inventario {
 
     var objetos= mutableMapOf<String,Item?>(
@@ -8,18 +8,13 @@ object Inventario {
         "Piedra" to null, "Libro" to null, "Pergamino" to null)
 
 
-    fun espacioOcupado(item:Item):Boolean{ //para preguntar al usuario si quiere reemplazar el objeto por el nuevo,
-                                            //si es así llamar a la funcion addObjeto
-        return objetos[item.tipo] != null
-    }
-    fun usarOjetoConsumible(item: Item){
-        //faltaría por añadir el uso de turnos en el cooldown y se podría usar para pergaminos y para libros
-        if(item.categoria=="Usable" && item.usos>0){
-            Jugador.usarItem(item) //modificarla para los casos en que sea efectos especiales TODO
+    fun espacioOcupado(item:Item):Boolean{return objetos[item.tipo] != null}/*para preguntar al usuario si quiere reemplazar el objeto por el nuevo, si es así llamar a la funcion addObjeto*/
+
+    fun usarOjetoConsumible(item: Item){//faltaría por añadir el uso de turnos en el cooldown y se podría usar para pergaminos y para libros
+        if(item.categoria=="Consumible" && item.usos>0){
+            item.usarItem() //modificarla para los casos en que sea efectos especiales TODO
             item.usos--
-            if(item.usos<=0 && item.cooldown==null){
-                objetos[item.tipo]=null
-            }
+            if(item.usos<=0 && item.cooldown==null){ objetos[item.tipo]=null}//si no tiene usos restante y no tiene cooldown(para el caso en el que los usos se recargan) se elimina del inventario
         }
     }
 
@@ -32,11 +27,11 @@ object Inventario {
         }else{
             if(espacioOcupado(item)==false){
                 objetos[item.tipo]=item
-                Jugador.usarItem(item)
+                item.usarItem()
             }else{
-                Jugador.eliminarItem(objetos[item.tipo]!!)
+                objetos[item.tipo]!!.eliminarItem()
                 objetos[item.tipo]=item
-                Jugador.usarItem(item)
+                item.usarItem()
             }
         }
     }

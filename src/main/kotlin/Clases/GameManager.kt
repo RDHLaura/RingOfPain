@@ -1,29 +1,10 @@
-
+package Clases
 object GameManager {
 
     var salaActual:Sala= Sala(TipoSalas.ESTANDAR) //se inicia con la principal creada
-    var turno=0
-
-
-    //////////////////interacción jugador con la carta seleccionada//////////////////////////////
-    fun actualizarTurno(){
-        turno++
-        danyoVeneno()
-    }
-
-    fun accionJugador(carta: Carta){ //el jugador selecciona una carta del anillo ataca/equipa
-        actualizarTurno()
-        when (carta){
-            is Item->Inventario.addObjeto(carta) //crear una función que equipe cualquier objeto TODO
-            is Enemigo -> JugadorAtacaEnemigo(carta)
-            is Puerta -> siguienteSala(carta.tipoSalas)
-        }
-    }
-
 
     //////////////creación de sala//////////////////////////
     fun siguienteSala(tipoSalas: TipoSalas=TipoSalas.ESTANDAR){ //crea la sala y usa el bote si lo tiene equipado y con usos disponibles
-
         if(Inventario.objetos["Bote"]!=null && Inventario.objetos["Bote"]!!.usos>0){
             Inventario.usarOjetoConsumible(Inventario.objetos["Bote"]!!)
         }
@@ -36,14 +17,40 @@ object GameManager {
         }
     }
 
-    //cambiar fórmulas de ataque TODO
-    ////////////////Funciones ataques///////////////////
+    //////////////////interacción jugador //////////////////////////////
+    fun pasarCartaIzq(){
+        detectar(salaActual.cartasSala[0])
+        salaActual.rotarIzquierda()
+    }
+    fun pasarCartaDcha(){
+        detectar(salaActual.cartasSala[1])
+        salaActual.rotarDerecha()
+    }
+    fun detectar(carta: Carta){ //comprueba si la carta que se pasa es un enemigo, y según el sigilo del jugador tiene más probabilidad de no ser detectado
+        if(carta is Enemigo && (0..99).random()<=Jugador.sigilo) {
+            (carta as Enemigo).ataque(Jugador)
+        }
+    }
+    fun seleccionarCarta(carta: Carta){ //el jugador selecciona una carta del anillo
+        when (carta){
+            is Item->Inventario.addObjeto(carta) //crear una función que equipe cualquier objeto TODO
+            is Enemigo -> ataque_a_enemigo(carta)//llama a ataqueEnemigo que llama a la función de
+            is Puerta -> carta.usarPuerta()
+        }
+    }
 
-    fun JugadorAtacaEnemigo(enemigo: Enemigo){ //el jugador realiza el ataque al enemigo seleccionado
-        if (Jugador.velocidad>enemigo.velocidad){
+
+    ////////////////funciones de ataque///////////////////
+    fun ataque_a_enemigo(enemigo: Enemigo){ /*se determina el orden de ataque y  el jugador realiza el ataque al enemigo seleccionado,
+                                                 se llama a la función para que el enemigo haga su atque*/
+        if (Jugador.velocidad>=enemigo.velocidad){
             Jugador.ataque(enemigo)
-            enemigo.comprobarMuerto()
-            ataqueEnemigo(enemigo)
+            if(enemigo.tipoDanioEspecial in listOf<TipoDanio>(TipoDanio.EXPLOSION)){ //incluir los tipos que hagan daño a pesar de morir
+                ataqueEnemigo(enemigo)
+            }else{
+                enemigo.comprobarMuerto()
+                ataqueEnemigo(enemigo)
+            }
         }
         else {
             ataqueEnemigo(enemigo)
@@ -51,22 +58,18 @@ object GameManager {
         }
     }
 
-
     private fun ataqueEnemigo(enemigo: Enemigo){ //selecciona el tipo de ataque que realizará el enemigo dependiendo del tipo que sea
         when(enemigo.tipoDanioEspecial){
-            null-> enemigoAtacaJugador(enemigo)
             TipoDanio.EXPLOSION->explotar(enemigo)
-            TipoDanio.VENENO->enemigoLanzaVeneno(enemigo)
+            //TipoDanio.VENENO->//TODO
+            else-> enemigo.ataque(Jugador)
         }
     }
 
-    private fun enemigoAtacaJugador(enemigo: Enemigo){ //Comprueba que el enemigo esté en la posición 0 y 1 para hacer daño al jugador
-        if(salaActual.cartasSala.indexOf(enemigo) in 0..1){
-            enemigo.ataque(Jugador)
-        }
-    }
+
+
 ////////////////función explotar//////////////
-    fun anterior(elemento:Carta):Carta?{
+    fun anterior(elemento:Carta):Carta?{ //el adyacente de la izq
         var lista= salaActual.cartasSala
         if (lista.filter { it is Enemigo }.size < 2 ) return null //no puede haber un elemento anterior si hay menos de 2 elementos
         val indice = lista.indexOf(elemento)
@@ -92,11 +95,11 @@ object GameManager {
     }
 
     fun explotar(enemigo: Enemigo){
-        enemigoAtacaJugador(enemigo)//ataca al jugador
+        enemigo.ataque(Jugador)//ataca al jugador
         val adyacentes = adyacentes(enemigo)
         enemigo.muerto()
         if(adyacentes.isNotEmpty()){
-            adyacentes.forEach { it.vidaActual=0 }//adyacente sufre daño por enemigo explotado
+            adyacentes.forEach { enemigo.ataque(it) }//adyacente sufre daño por enemigo explotado
             adyacentes.filter{it.tipoDanioEspecial!=TipoDanio.EXPLOSION}.forEach{ if(it.vidaActual<=0) it.muerto()}
             adyacentes.filter { it.tipoDanioEspecial == TipoDanio.EXPLOSION}.forEach{if(it.vidaActual<=0) explotar(it)}
         }
@@ -104,21 +107,7 @@ object GameManager {
 
 
 /////////////////función veneno/////////////////
-    fun enemigoLanzaVeneno(enemigo: Enemigo){ //enemigo venenoso
-        Jugador.envenenado=true
-        enemigoAtacaJugador(enemigo)
-    }
-    fun danyoVeneno(){ //actualiza el daño de las cartas envenadas en el sig turno del veneno
-        salaActual.cartasSala.forEach{ // TODO implementar función para que el jugador pueda envenenar cartas
-            if(it is Enemigo && it.envenenado==true){
-                enemigoLanzaVeneno(it)
-                it.envenenado=false
-            }
-        }
-        if(Jugador.envenenado==true){
-            //TODO aplicar segundo daño a jugador
-        }
-    }
+
 
 
 

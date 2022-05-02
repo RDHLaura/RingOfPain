@@ -1,4 +1,4 @@
-
+package Clases
 enum class  TipoSalas (
 
     var cartas:MutableMap<String, Int>,
@@ -8,7 +8,7 @@ enum class  TipoSalas (
 
         ){
 
-    //Revisar esto, no me gusta
+    //Revisar esto, una vez se haya implementado la clase item
 
 
     ESTANDAR(mutableMapOf("Clases.Enemigo" to 6,

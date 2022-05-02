@@ -1,7 +1,7 @@
-
+package Clases
 class Puerta(var tipoSalas:TipoSalas):Carta (){
 
-    fun usarPuerta(){ //llamar a esta función cuando el jugador seleccione la puerta
+    fun usarPuerta(){
         GameManager.siguienteSala(tipoSalas)
     }
 

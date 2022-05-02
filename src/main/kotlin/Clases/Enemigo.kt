@@ -1,4 +1,4 @@
-
+package Clases
 
 class Enemigo(tier:Int):Carta() {
     val enemigoElegido: ClaseEnemigo
@@ -22,23 +22,14 @@ class Enemigo(tier:Int):Carta() {
     var almas=enemigoElegido.almas
     var tier: Int=enemigoElegido.tier
 
-    var puedeAtacar=true
-    var envenenado=false
 
+    fun porcentajeVidaRestante():Double{return (1-(vidaTotal-vidaActual)/vidaTotal).toDouble()}
 
-    fun porcentajeVidaRestante():Double
-    {
-        return (1-(vidaTotal-vidaActual)/vidaTotal).toDouble()
-    }
-
-    //////////////////////////////////////////////////////////////////
-    ////////////////////////Poner en la clase oficial///////////////
-    fun comprobarMuerto():Boolean{
-         if (vidaActual<=0){
-             muerto()
-             return true
+    fun comprobarMuerto():Boolean{ //comprueba si el enemigo está muerto
+        if (vidaActual<=0){
+            muerto()
+            return true
         }else return false
-
     }
     fun muerto(){ //añade las almas al jugador y lo elimina de la lista de cartas de la sala
         Jugador.almas+=this.almas
@@ -48,16 +39,16 @@ class Enemigo(tier:Int):Carta() {
         }
     }
 
-    fun ataque(jugador:Jugador){
-        jugador.vida-=danioFisico //Cambiar formula TODO
+    fun ataque(jugador:Jugador){ //enemigo ataca al jugador
+        if(GameManager.salaActual.cartasSala.indexOf(this) in 0..1) jugador.vida-=danioFisico //Cambiar formula TODO
+
     }
-    fun ataque(enemigo: Enemigo){//Para ataques expansivos
-        enemigo.vidaActual-=danioFisico //Cambiar formula TODO
+    fun ataque(enemigo: Enemigo){//enemigo ataca a otros enemigos. Para ataques expansivos
+        if(enemigo.tipoDanioEspecial==TipoDanio.EXPLOSION){enemigo.vidaActual=0}
+        else enemigo.vidaActual-=(danioFisico+danioEspecial) //Cambiar formula TODO
     }
 
     override fun toString(): String {
         return "Enemigo(enemigoElegido=$enemigoElegido, nombre='$nombre', vidaActual=$vidaActual, velocidad=$velocidad,almas=$almas, tier=$tier)"
     }
-
-
 }
